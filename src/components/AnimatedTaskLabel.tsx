@@ -12,6 +12,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 interface Props {
+  // date: any;
   strikeThrough: boolean;
   textColor: string;
   inactiveTextColor: string;
@@ -95,6 +96,7 @@ const AnimatedTaskLabel = memo((props: Props) => {
           style={[strikeThroughAnimatedStyles]}
         />
       </AnimatedHStack>
+      {/* {props.date !== 'Invalid date' && <Text>{props.date}</Text>} */}
     </Pressable>
   );
 });

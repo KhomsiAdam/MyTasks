@@ -1,7 +1,8 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { PanGestureHandlerProps } from 'react-native-gesture-handler';
 import {
   NativeSyntheticEvent,
+  Platform,
   Pressable,
   TextInputChangeEventData
 } from 'react-native';
@@ -12,12 +13,16 @@ import {
   themeTools,
   useColorModeValue,
   Icon,
-  Input
+  Input,
+  Button,
+  VStack,
+  Text
 } from 'native-base';
 import AnimatedCheckbox from 'react-native-checkbox-reanimated';
 import AnimatedTaskLabel from './AnimatedTaskLabel';
 import SwipeableView from './SwipeableView';
 import { Feather } from '@expo/vector-icons';
+import moment from 'moment';
 
 interface Props extends Pick<PanGestureHandlerProps, 'simultaneousHandlers'> {
   isEditing: boolean;
@@ -28,10 +33,12 @@ interface Props extends Pick<PanGestureHandlerProps, 'simultaneousHandlers'> {
   onChangeSubject?: (subject: string) => void;
   onFinishEditing?: () => void;
   subject: string;
+  // date: any;
 }
 
 const TaskItem = (props: Props) => {
   const {
+    // date,
     isEditing,
     isDone,
     onToggleCheckbox,
@@ -72,64 +79,67 @@ const TaskItem = (props: Props) => {
   );
 
   return (
-    <SwipeableView
-      simultaneousHandlers={simultaneousHandlers}
-      onSwipeLeft={onRemove}
-      backView={
-        <Box
-          w="full"
-          h="full"
-          alignItems="flex-end"
-          justifyContent="center"
-          pr={4}
-          bg="red.500"
-        >
-          <Icon color="white" as={<Feather name="trash-2" />} />
-        </Box>
-      }
-    >
-      <HStack
-        alignItems="center"
-        w="full"
-        px={4}
-        py={2}
-        bg={useColorModeValue('blue.50', 'darkBlue.800')}
-      >
-        <Box width={30} height={30} mr={2}>
-          <Pressable onPress={onToggleCheckbox}>
-            <AnimatedCheckbox
-              highlightColor={highlightColor}
-              checkmarkColor={checkMarkColor}
-              boxOutlineColor={boxStroke}
-              checked={isDone}
-            />
-          </Pressable>
-        </Box>
-        {isEditing ? (
-          <Input
-            placeholder="Task"
-            value={subject}
-            variant="unstyled"
-            fontSize={19}
-            px={1}
-            py={0}
-            autoFocus
-            blurOnSubmit
-            onChange={handleChangeSubject}
-            onBlur={onFinishEditing}
-          />
-        ) : (
-          <AnimatedTaskLabel
-            textColor={activeTextColor}
-            inactiveTextColor={doneTextColor}
-            strikeThrough={isDone}
-            onPress={onPressLabel}
+    <>
+      <SwipeableView
+        simultaneousHandlers={simultaneousHandlers}
+        onSwipeLeft={onRemove}
+        backView={
+          <Box
+            w="full"
+            h="full"
+            alignItems="flex-end"
+            justifyContent="center"
+            pr={4}
+            bg="red.500"
           >
-            {subject}
-          </AnimatedTaskLabel>
-        )}
-      </HStack>
-    </SwipeableView>
+            <Icon color="white" as={<Feather name="trash-2" />} />
+          </Box>
+        }
+      >
+        <HStack
+          alignItems="center"
+          w="full"
+          px={4}
+          py={2}
+          bg={useColorModeValue('blue.50', 'darkBlue.800')}
+        >
+          <Box width={30} height={30} mr={2}>
+            <Pressable onPress={onToggleCheckbox}>
+              <AnimatedCheckbox
+                highlightColor={highlightColor}
+                checkmarkColor={checkMarkColor}
+                boxOutlineColor={boxStroke}
+                checked={isDone}
+              />
+            </Pressable>
+          </Box>
+          {isEditing ? (
+            <Input
+              placeholder="Task"
+              value={subject}
+              variant="unstyled"
+              fontSize={19}
+              px={1}
+              py={0}
+              autoFocus
+              blurOnSubmit
+              onChange={handleChangeSubject}
+              onBlur={onFinishEditing}
+            />
+          ) : (
+            <AnimatedTaskLabel
+              textColor={activeTextColor}
+              inactiveTextColor={doneTextColor}
+              strikeThrough={isDone}
+              onPress={onPressLabel}
+              // date={moment(date).format('MMMM Do YYYY, h:mm:ss a')}
+            >
+              {subject}
+            </AnimatedTaskLabel>
+          )}
+        </HStack>
+      </SwipeableView>
+    </>
   );
 };
 export default TaskItem;
