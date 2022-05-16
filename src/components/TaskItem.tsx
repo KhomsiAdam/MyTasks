@@ -33,12 +33,12 @@ interface Props extends Pick<PanGestureHandlerProps, 'simultaneousHandlers'> {
   onChangeSubject?: (subject: string) => void;
   onFinishEditing?: () => void;
   subject: string;
-  // date: any;
+  date: any;
 }
 
 const TaskItem = (props: Props) => {
   const {
-    // date,
+    date,
     isEditing,
     isDone,
     onToggleCheckbox,
@@ -132,7 +132,7 @@ const TaskItem = (props: Props) => {
               inactiveTextColor={doneTextColor}
               strikeThrough={isDone}
               onPress={onPressLabel}
-              // date={moment(date).format('MMMM Do YYYY, h:mm:ss a')}
+              date={moment(date).format('MMMM Do YYYY, h:mm:ss a')}
             >
               {subject}
             </AnimatedTaskLabel>

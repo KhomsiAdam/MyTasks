@@ -64,14 +64,6 @@ const Sidebar = (props: DrawerContentComponentProps) => {
         >
           Tasks
         </MenuButton>
-        <MenuButton
-          active={currentRoute === 'About'}
-          onPress={handlePressMenuAbout}
-          icon="info"
-          borderRadius="10px"
-        >
-          About
-        </MenuButton>
       </VStack>
       <Center>
         <ThemeToggle />

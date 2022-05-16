@@ -42,11 +42,7 @@ const initialData: Array<TaskItemInterface> = [
 ];
 
 async function schedulePushNotification(task: any) {
-  console.log(task.date);
   const trigger = new Date(task.date);
-  // const trigger = new Date('2022-05-14T23:58:41.011Z');
-  // const trigger = new Date(Date.now() + 60 * 60);
-  console.log(trigger);
   await Notifications.scheduleNotificationAsync({
     content: {
       title: 'Task reminder',
@@ -71,7 +67,6 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
   } else {
     alert('Must use physical device for Push Notifications');
   }
@@ -92,10 +87,8 @@ const MainScreen = () => {
   const [data, setData] = React.useState(initialData);
   const [task, setTask] = React.useState();
   const [dateTime, setDateTime] = useState(new Date());
-  // const [time, setTime] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [pickerIsVisible, setPickerIsVisible] = React.useState(false);
   const [isScheduled, setIsScheduled] = React.useState(false);
 
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -103,12 +96,13 @@ const MainScreen = () => {
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
 
+  // Notifications.cancelAllScheduledNotificationsAsync().then(() => {console.log('cancelled')}).catch(err => console.log(err));
+
   useEffect(() => {
     if (isScheduled) {
       schedulePushNotification(task);
       setIsScheduled(false);
       setDateTime(new Date());
-      console.log(data);
     }
   }, [isScheduled]);
 
@@ -136,44 +130,12 @@ const MainScreen = () => {
     };
   }, []);
 
-  // const [timePickerIsVisible, setTimePickerIsVisible] = React.useState(false);
-
-  // const datePickerOnChange = (e: any, selectedDate: any) => {
-  //   const currentDate = selectedDate || date;
-  //   setDatePickerIsVisible(Platform.OS === 'ios');
-
-  // let tempDate = new Date(currentDate);
-  // let fDate =
-  //   tempDate.getDate() +
-  //   '-' +
-  //   (tempDate.getMonth() + 1) +
-  //   '-' +
-  //   tempDate.getFullYear();
-  // let fTime = tempDate.getHours() + ':' + tempDate.getMinutes();
-  // console.log(fDate, fTime);
-  // setDate(currentDate);
-  // setTime(fTime);
-  // };
-  // const timePickerOnChange = (e: any, selectedTime: any) => {
-  //   const currentTime = selectedTime || time;
-  //   setTimePickerIsVisible(Platform.OS === 'ios');
-  //   console.log(currentTime);
-  //   setTime(currentTime);
-  // };
-
-  // const handlePickerVisibility = (currentMode: any) => {
-  //   setPickerIsVisible(true);
-  //   setMode(currentMode);
-  // };
 
   const onChange = async (event: any, selectedValue: any) => {
     setShow(Platform.OS === 'ios');
     if (mode == 'date') {
-      // const currentDate = selectedValue || new Date();
-      // setDate(currentDate);
       setMode('time');
       setShow(Platform.OS !== 'ios');
-      // console.log('date: ' + currentDate);
     } else {
       const selectedDateTime = selectedValue || new Date();
       setDateTime(selectedDateTime);
@@ -223,9 +185,7 @@ const MainScreen = () => {
 
   const handleFinishEditingTaskItem = React.useCallback(item => {
     setEditingItemId(null);
-    // setPickerIsVisible(true);
     showDatepicker();
-    // console.log(item);
     setTask(item);
   }, []);
 
@@ -279,24 +239,6 @@ const MainScreen = () => {
             onChange={onChange}
           />
         )}
-        {/* {timePickerIsVisible && (
-          <DateTimePicker
-            value={date}
-            mode={'time'}
-            is24Hour={true}
-            style={{ width: '80%' }}
-            onChange={timePickerOnChange}
-          />
-        )}
-        {datePickerIsVisible && (
-          <DateTimePicker
-            value={date}
-            mode={'date'}
-            is24Hour={true}
-            style={{ width: '80%' }}
-            onChange={datePickerOnChange}
-          />
-        )} */}
       </VStack>
       <Fab
         position="absolute"

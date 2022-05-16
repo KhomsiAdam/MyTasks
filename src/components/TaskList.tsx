@@ -14,7 +14,7 @@ interface TaskItemInterface {
   id: string;
   subject: string;
   isDone: boolean;
-  // date: any;
+  date: any;
 }
 
 interface TaskListProps {
@@ -88,7 +88,7 @@ export const AnimatedTaskItem = (props: TaskItemProps) => {
     >
       <TaskItem
         simultaneousHandlers={simultaneousHandlers}
-        // date={data.date}
+        date={data.date}
         subject={data.subject}
         isDone={data.isDone}
         isEditing={isEditing}
